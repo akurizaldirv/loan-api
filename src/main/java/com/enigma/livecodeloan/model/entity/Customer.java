@@ -27,7 +27,7 @@ public class Customer {
     private Boolean status;
     @OneToOne
     @JoinColumn(name = "user_id")
-    private AppUser user;
+    private User user;
     @OneToMany(mappedBy = "customer")
     private List<LoanTransaction> loanTransactions;
 }

@@ -1,6 +1,6 @@
 package com.enigma.livecodeloan.service.impl;
 
-import com.enigma.livecodeloan.model.entity.AppUser;
+import com.enigma.livecodeloan.model.entity.User;
 import com.enigma.livecodeloan.model.entity.Customer;
 import com.enigma.livecodeloan.model.request.auth.RegisterCustomerRequest;
 import com.enigma.livecodeloan.model.request.customer.UpdateCustomerRequest;
@@ -22,22 +22,22 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
 
     @Override
-    public Customer create(AppUser appUser) {
+    public Customer create(User user) {
         Customer customer = new Customer();
-        customer.setUser(appUser);
+        customer.setUser(user);
 
         return customerRepository.save(customer);
     }
 
     @Override
-    public Customer createCustomer(AppUser appUser, RegisterCustomerRequest request) {
+    public Customer createCustomer(User user, RegisterCustomerRequest request) {
         Customer customer = Customer.builder()
                 .phone(request.getPhone())
                 .dateOfBirth(request.getDateOfBirth())
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .status(true)
-                .user(appUser)
+                .user(user)
                 .build();
 
         return customerRepository.save(customer);

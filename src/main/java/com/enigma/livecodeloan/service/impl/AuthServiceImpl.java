@@ -1,6 +1,6 @@
 package com.enigma.livecodeloan.service.impl;
 
-import com.enigma.livecodeloan.model.entity.AppUser;
+import com.enigma.livecodeloan.model.entity.User;
 import com.enigma.livecodeloan.model.entity.Customer;
 import com.enigma.livecodeloan.model.entity.Role;
 import com.enigma.livecodeloan.model.entity.UserRole;
@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional(rollbackOn = Exception.class)
     public RegisterResponse registerCustomer(RegisterCustomerRequest request) {
         Role role = roleService.getOrSave(ERole.ROLE_CUSTOMER);
-        AppUser appUser = AppUser.builder()
+        User user = User.builder()
                 .password(passwordEncoder.encode(request.getPassword()))
                 .email(request.getEmail())
                 .build();
@@ -53,15 +53,15 @@ public class AuthServiceImpl implements AuthService {
         UserRole userRole = UserRole.builder()
                 .role(role)
                 .build();
-        appUser.setRoles(List.of(userRole));
+        user.setRoles(List.of(userRole));
 
-        AppUser createdAppUser = appUserRepository.save(appUser);
-        userRole.setAppUser(createdAppUser);
+        User createdUser = appUserRepository.save(user);
+        userRole.setUser(createdUser);
         UserRole createdUserRole = userRoleRepository.save(userRole);
 
-        Customer customer = customerService.createCustomer(createdAppUser, request);
+        Customer customer = customerService.createCustomer(createdUser, request);
 
-        return AuthMapper.mapToRegisterRes(appUser);
+        return AuthMapper.mapToRegisterRes(user);
     }
     @Override
     @Transactional(rollbackOn = Exception.class)
@@ -70,22 +70,22 @@ public class AuthServiceImpl implements AuthService {
         Role roleAdmin = roleService.getOrSave(ERole.ROLE_ADMIN);
         Role roleStaff = roleService.getOrSave(ERole.ROLE_STAFF);
 
-        AppUser appUser = AuthMapper.mapToEntity(request, passwordEncoder.encode(request.getPassword()));
+        User user = AuthMapper.mapToEntity(request, passwordEncoder.encode(request.getPassword()));
 
         List<UserRole> roles = new ArrayList<>();
         roles.add(UserRole.builder().role(roleCustomer).build());
         roles.add(UserRole.builder().role(roleStaff).build());
         roles.add(UserRole.builder().role(roleAdmin).build());
 
-        appUser.setRoles(roles);
-        AppUser createdAppUser = appUserRepository.save(appUser);
+        user.setRoles(roles);
+        User createdUser = appUserRepository.save(user);
 
         for (UserRole role : roles) {
-            role.setAppUser(createdAppUser);
+            role.setUser(createdUser);
             userRoleRepository.save(role);
         }
 
-        return AuthMapper.mapToRegisterRes(createdAppUser);
+        return AuthMapper.mapToRegisterRes(createdUser);
     }
 
     @Override
@@ -94,21 +94,21 @@ public class AuthServiceImpl implements AuthService {
         Role roleCustomer = roleService.getOrSave(ERole.ROLE_CUSTOMER);
         Role roleStaff = roleService.getOrSave(ERole.ROLE_STAFF);
 
-        AppUser appUser = AuthMapper.mapToEntity(request, passwordEncoder.encode(request.getPassword()));
+        User user = AuthMapper.mapToEntity(request, passwordEncoder.encode(request.getPassword()));
 
         List<UserRole> roles = new ArrayList<>();
         roles.add(UserRole.builder().role(roleCustomer).build());
         roles.add(UserRole.builder().role(roleStaff).build());
 
-        appUser.setRoles(roles);
-        AppUser createdAppUser = appUserRepository.save(appUser);
+        user.setRoles(roles);
+        User createdUser = appUserRepository.save(user);
 
         for (UserRole role : roles) {
-            role.setAppUser(createdAppUser);
+            role.setUser(createdUser);
             userRoleRepository.save(role);
         }
 
-        return AuthMapper.mapToRegisterRes(createdAppUser);
+        return AuthMapper.mapToRegisterRes(createdUser);
     }
 
     @Override
@@ -121,9 +121,9 @@ public class AuthServiceImpl implements AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        AppUser appUser = (AppUser) authentication.getPrincipal();
-        String token = jwtUtil.generateToken(appUser);
+        User user = (User) authentication.getPrincipal();
+        String token = jwtUtil.generateToken(user);
 
-        return AuthMapper.mapToLoginRes(appUser, token);
+        return AuthMapper.mapToLoginRes(user, token);
     }
 }

@@ -1,6 +1,6 @@
 package com.enigma.livecodeloan.service.impl;
 
-import com.enigma.livecodeloan.model.entity.AppUser;
+import com.enigma.livecodeloan.model.entity.User;
 import com.enigma.livecodeloan.model.response.auth.UserResponse;
 import com.enigma.livecodeloan.repository.AppUserRepository;
 import com.enigma.livecodeloan.service.UserService;
@@ -20,43 +20,43 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUserId(String id) {
-        AppUser appUser = appUserRepository.findById(id).orElseThrow(
+        User user = appUserRepository.findById(id).orElseThrow(
                 () -> new UserNotFoundException("User not found")
         );
 
-        return AppUser.builder()
-                .email(appUser.getUsername())
-                .id(appUser.getId())
-                .password(appUser.getPassword())
-                .roles(appUser.getRoles())
+        return User.builder()
+                .email(user.getUsername())
+                .id(user.getId())
+                .password(user.getPassword())
+                .roles(user.getRoles())
                 .build();
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser appUser = appUserRepository.findAppUserByEmail(username).orElseThrow(
+        User user = appUserRepository.findAppUserByEmail(username).orElseThrow(
                 () -> new UserNotFoundException("User not found")
         );
 
-        return AppUser.builder()
-                .email(appUser.getUsername())
-                .id(appUser.getId())
-                .password(appUser.getPassword())
-                .roles(appUser.getRoles())
+        return User.builder()
+                .email(user.getUsername())
+                .id(user.getId())
+                .password(user.getPassword())
+                .roles(user.getRoles())
                 .build();
     }
 
     @Override
     public UserResponse getById(String id) {
-        AppUser appUser = appUserRepository.findById(id).orElseThrow(
+        User user = appUserRepository.findById(id).orElseThrow(
                 () -> new UserNotFoundException("User not found")
         );
-        List<String> roles = appUser.getRoles().stream().map(role ->
+        List<String> roles = user.getRoles().stream().map(role ->
                 role.getRole().getRole().name()
         ).toList();
 
         return UserResponse.builder()
-                .email(appUser.getUsername())
+                .email(user.getUsername())
                 .role(roles)
                 .build();
     }
