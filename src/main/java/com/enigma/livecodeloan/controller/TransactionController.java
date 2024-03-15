@@ -3,6 +3,7 @@ package com.enigma.livecodeloan.controller;
 import com.enigma.livecodeloan.constant.AppPath;
 import com.enigma.livecodeloan.model.request.loantype.LoanTypeRequest;
 import com.enigma.livecodeloan.model.request.transaction.ApproveRequest;
+import com.enigma.livecodeloan.model.request.transaction.PayRequest;
 import com.enigma.livecodeloan.model.request.transaction.RejectRequest;
 import com.enigma.livecodeloan.model.request.transaction.TransactionRequest;
 import com.enigma.livecodeloan.model.response.CommonResponse;
@@ -70,6 +71,17 @@ public class TransactionController {
                         CommonResponse.builder()
                                 .message("Success")
                                 .data(transactionService.reject(id, request))
+                                .build()
+                );
+    }
+    @PutMapping(AppPath.ID + AppPath.PAY
+    )
+    public ResponseEntity<?> pay(@PathVariable String id, @Validated @RequestBody PayRequest payRequest) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(
+                        CommonResponse.builder()
+                                .message("Success")
+                                .data(transactionService.pay(id, payRequest))
                                 .build()
                 );
     }

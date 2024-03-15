@@ -15,4 +15,5 @@ public class AppPath {
     public final static String ID = "/{id}";
     public final static String APPROVE = "/approve";
     public final static String REJECT = "/reject";
+    public final static String PAY = "/pay";
 }

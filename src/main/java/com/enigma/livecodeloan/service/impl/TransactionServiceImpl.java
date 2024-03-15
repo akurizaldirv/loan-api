@@ -2,6 +2,7 @@ package com.enigma.livecodeloan.service.impl;
 
 import com.enigma.livecodeloan.model.entity.*;
 import com.enigma.livecodeloan.model.request.transaction.ApproveRequest;
+import com.enigma.livecodeloan.model.request.transaction.PayRequest;
 import com.enigma.livecodeloan.model.request.transaction.RejectRequest;
 import com.enigma.livecodeloan.model.request.transaction.TransactionRequest;
 import com.enigma.livecodeloan.model.response.transaction.TransactionDetailResponse;
@@ -61,11 +62,26 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    public LoanTransactionDetail getTrxDetailById(String id) {
+        return loanTransactionDetailRepository.findById(id).orElseThrow(
+                () -> new DataNotFoundException("Loan Transaction Detail not found")
+        );
+    }
+
+    @Override
+    public LoanTransactionDetail getTrxDetailByIdAndLoanId(String id, String loanId) {
+        return loanTransactionDetailRepository.findByIdAndLoanId(id, loanId).orElseThrow(
+                () -> new DataNotFoundException("Loan Transaction Detail not found")
+        );
+    }
+
+    @Override
     public TransactionResponse getById(String id) {
         LoanTransaction loanTransaction = this.getTrxById(id);
         List<TransactionDetailResponse> detailResponses = loanTransaction.getLoanTransactionDetails()
                 .stream().map(TransactionMapper::mapToDetailRes).toList();
-
+        System.out.println(" --------- " + loanTransaction.getLoanTransactionDetails());
+        System.out.println(" --------- " + detailResponses);
         return TransactionMapper.mapToTrxRes(loanTransaction, detailResponses);
     }
 
@@ -114,6 +130,7 @@ public class TransactionServiceImpl implements TransactionService {
                             .createdAt(Instant.now().getEpochSecond())
                             .nominal(dividedNominal.doubleValue())
                             .loanStatus(LoanStatus.UNPAID)
+                            .loanTransaction(loanTransaction)
                             .build()
             );
         }
@@ -143,5 +160,24 @@ public class TransactionServiceImpl implements TransactionService {
         loanTransactionRepository.save(loanTransaction);
 
         return TransactionMapper.mapToTrxRes(loanTransaction, null);
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public TransactionResponse pay(String trxId, PayRequest payRequest) {
+        LoanTransaction loanTransaction = this.getTrxById(trxId);
+        if (loanTransaction.getApprovalStatus() == null) throw new ValidationException("Loan Request not approved yet");
+        if (loanTransaction.getApprovalStatus() == ApprovalStatus.REJECTED) throw new ValidationException("Loan Request already rejected");
+        loanTransaction.setUpdatedAt(Instant.now().getEpochSecond());
+
+        LoanTransactionDetail loanTransactionDetail = this.getTrxDetailByIdAndLoanId(payRequest.getLoanTransactionDetailId(), trxId);
+        loanTransactionDetail.setTransactionDate(Instant.now().getEpochSecond());
+        loanTransactionDetail.setUpdatedAt(Instant.now().getEpochSecond());
+        loanTransactionDetail.setLoanStatus(LoanStatus.PAID);
+
+        loanTransactionDetailRepository.save(loanTransactionDetail);
+        loanTransactionRepository.save(loanTransaction);
+
+        return this.getById(trxId);
     }
 }
