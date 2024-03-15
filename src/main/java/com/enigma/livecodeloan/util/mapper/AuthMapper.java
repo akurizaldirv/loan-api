@@ -13,7 +13,7 @@ public class AuthMapper {
     public static AppUser mapToEntity(AuthRequest authRequest, String encryptedPassword) {
         return AppUser.builder()
                 .email(authRequest.getEmail())
-                .password(authRequest.getPassword())
+                .password(encryptedPassword)
                 .build();
     }
 

@@ -32,6 +32,7 @@ public class AuthController {
 
     @PostMapping(AppPath.LOGIN)
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
+        System.out.println("============================ CONTROLLER");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
                         CommonResponse.builder()

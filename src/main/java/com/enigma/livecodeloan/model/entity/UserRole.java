@@ -8,7 +8,7 @@ import lombok.*;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "t_role")
+@Table(name = "t_user_role")
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

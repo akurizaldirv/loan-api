@@ -60,11 +60,15 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginResponse login(AuthRequest authRequest) {
+        System.out.println("============================ SERVICE");
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authRequest.getEmail().toLowerCase(),
                         authRequest.getPassword()
                 ));
+
+        System.out.println("============================ AFTER SERVICE");
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

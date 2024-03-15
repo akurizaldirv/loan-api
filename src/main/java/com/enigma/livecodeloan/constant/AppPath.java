@@ -3,7 +3,9 @@ package com.enigma.livecodeloan.constant;
 public class AppPath {
     public final static String BASE = "/api";
     public final static String AUTH_BASE = BASE + "/auth";
+    public final static String USERS = BASE + "/users";
 
-    public final static String REGISTER = "/register";
-    public final static String LOGIN = "/login";
+    public final static String REGISTER = "/signup";
+    public final static String LOGIN = "/signin";
+    public final static String ID = "/{id}";
 }

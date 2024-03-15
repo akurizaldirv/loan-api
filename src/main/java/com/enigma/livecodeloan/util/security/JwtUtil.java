@@ -7,12 +7,15 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.enigma.livecodeloan.model.entity.AppUser;
+import com.enigma.livecodeloan.model.entity.UserRole;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -30,12 +33,16 @@ public class JwtUtil {
     public String generateToken(AppUser appUser) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET.getBytes(StandardCharsets.UTF_8));
+            List<String> roles = new ArrayList<>();
+            for (UserRole role : appUser.getRoles()) {
+                roles.add(role.getRole().getRole().name());
+            }
             return JWT.create() // Membuat JWT Token
                     .withIssuer(APP_NAME)
                     .withSubject(appUser.getId())
                     .withExpiresAt(Instant.now().plusSeconds(EXPIRATION))
                     .withIssuedAt(Instant.now())
-                    .withClaim("role", appUser.getRoles())
+                    .withClaim("role", roles)
                     .sign(algorithm);
         } catch (JWTCreationException e) {
             throw new RuntimeException();

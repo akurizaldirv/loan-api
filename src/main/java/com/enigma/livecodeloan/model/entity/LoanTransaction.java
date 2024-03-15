@@ -25,7 +25,6 @@ public class LoanTransaction {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    @Column(columnDefinition = "bigint check (nominal > 0)")
     private Double nominal;
     private Long approvedAt;
     private String approvedBy;

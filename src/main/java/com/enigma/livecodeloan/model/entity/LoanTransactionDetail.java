@@ -16,7 +16,7 @@ public class LoanTransactionDetail {
     private String id;
     @Column(name = "transaction_date")
     private Long transactionDate;
-    @Column(nullable = false, columnDefinition = "bigint check (nominal > 0)")
+    @Column(nullable = false)
     private Double nominal;
     @ManyToOne
     @JoinColumn(name = "trx_loan_id")
