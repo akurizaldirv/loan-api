@@ -8,6 +8,7 @@ import com.enigma.livecodeloan.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping(AppPath.REGISTER)
-    public ResponseEntity<?> register(@RequestBody RegisterCustomerRequest customerRequest) {
+    public ResponseEntity<?> register(@Validated @RequestBody RegisterCustomerRequest customerRequest) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
                         CommonResponse.builder()
@@ -31,7 +32,7 @@ public class AuthController {
                 );
     }
     @PostMapping(AppPath.ADMIN + AppPath.REGISTER)
-    public ResponseEntity<?> registerAdmin(@RequestBody AuthRequest request) {
+    public ResponseEntity<?> registerAdmin(@Validated @RequestBody AuthRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
                         CommonResponse.builder()
@@ -41,7 +42,7 @@ public class AuthController {
                 );
     }
     @PostMapping(AppPath.STAFF + AppPath.REGISTER)
-    public ResponseEntity<?> registerStaff(@RequestBody AuthRequest request) {
+    public ResponseEntity<?> registerStaff(@Validated @RequestBody AuthRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
                         CommonResponse.builder()
@@ -53,7 +54,7 @@ public class AuthController {
 
 
     @PostMapping(AppPath.LOGIN)
-    public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<?> login(@Validated @RequestBody AuthRequest authRequest) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
                         CommonResponse.builder()

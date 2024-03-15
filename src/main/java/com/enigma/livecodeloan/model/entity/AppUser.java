@@ -23,7 +23,7 @@ public class AppUser implements UserDetails {
     private String id;
     @Column(nullable = false, unique = true)
     private String email;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String password;
     @OneToMany(mappedBy = "appUser")
     private List<UserRole> roles;
