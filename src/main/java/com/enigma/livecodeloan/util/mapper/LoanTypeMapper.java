@@ -1,8 +1,8 @@
 package com.enigma.livecodeloan.util.mapper;
 
 import com.enigma.livecodeloan.model.entity.LoanType;
-import com.enigma.livecodeloan.model.request.loan.LoanTypeRequest;
-import com.enigma.livecodeloan.model.response.loan.LoanTypeResponse;
+import com.enigma.livecodeloan.model.request.loantype.LoanTypeRequest;
+import com.enigma.livecodeloan.model.response.loantype.LoanTypeResponse;
 
 public class LoanTypeMapper {
     public static LoanType mapToEntity(LoanTypeRequest request) {

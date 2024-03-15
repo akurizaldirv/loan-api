@@ -1,4 +1,4 @@
-package com.enigma.livecodeloan.model.response.loan;
+package com.enigma.livecodeloan.model.request.loantype;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class LoanTypeResponse {
-    private String id;
+public class LoanTypeRequest {
     private String type;
     private Long maxLoan;
 }

@@ -1,21 +1,14 @@
 package com.enigma.livecodeloan.service.impl;
 
-import com.enigma.livecodeloan.model.entity.InstalmentType;
 import com.enigma.livecodeloan.model.entity.LoanType;
-import com.enigma.livecodeloan.model.request.instalmenttype.InstalmentTypeRequest;
-import com.enigma.livecodeloan.model.request.instalmenttype.UpdateInstalmentTypeRequest;
-import com.enigma.livecodeloan.model.request.loan.LoanTypeRequest;
-import com.enigma.livecodeloan.model.request.loan.UpdateLoanTypeRequest;
-import com.enigma.livecodeloan.model.response.instalmenttype.InstalmentTypeResponse;
-import com.enigma.livecodeloan.model.response.loan.LoanTypeResponse;
+import com.enigma.livecodeloan.model.request.loantype.LoanTypeRequest;
+import com.enigma.livecodeloan.model.request.loantype.UpdateLoanTypeRequest;
+import com.enigma.livecodeloan.model.response.loantype.LoanTypeResponse;
 import com.enigma.livecodeloan.repository.LoanTypeRepository;
 import com.enigma.livecodeloan.service.LoanTypeService;
-import com.enigma.livecodeloan.util.enums.EInstalmentType;
 import com.enigma.livecodeloan.util.exception.DataNotFoundException;
-import com.enigma.livecodeloan.util.mapper.InstalmentTypeMapper;
 import com.enigma.livecodeloan.util.mapper.LoanTypeMapper;
 import jakarta.transaction.Transactional;
-import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

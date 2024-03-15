@@ -38,7 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getCustomerById(String id) {
-        return customerRepository.findByIdAndStatusTrue(id).orElseThrow(
+        return customerRepository.findByIdAndStatus(id, EStatus.ACTIVE).orElseThrow(
                 () -> new DataNotFoundException("Customer not found")
         );
     }
@@ -50,7 +50,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerResponse> getAll() {
-        List<Customer> customers = customerRepository.findAllByStatusTrue();
+        List<Customer> customers = customerRepository.findAllByStatus(EStatus.ACTIVE);
 
         return customers.stream().map(CustomerMapper::mapToRes).toList();
     }

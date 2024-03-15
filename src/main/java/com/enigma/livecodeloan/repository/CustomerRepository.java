@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<Customer, String> {
-    Optional<Customer> findByIdAndStatusTrue(String id);
+    Optional<Customer> findByIdAndStatus(String id, EStatus status);
     Optional<Customer> findByUserEmailAndStatus(String email, EStatus status);
-    List<Customer> findAllByStatusTrue();
+    List<Customer> findAllByStatus(EStatus eStatus);
     @Modifying
     @Query("update Customer c set c.status=:status where c.id=:id")
     void updateStatus(String id, EStatus status);

@@ -1,4 +1,4 @@
-package com.enigma.livecodeloan.model.request.loan;
+package com.enigma.livecodeloan.model.request.loantype;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -2,6 +2,7 @@ package com.enigma.livecodeloan.controller;
 
 import com.enigma.livecodeloan.constant.AppPath;
 import com.enigma.livecodeloan.model.request.auth.AuthRequest;
+import com.enigma.livecodeloan.model.request.auth.LoginRequest;
 import com.enigma.livecodeloan.model.response.CommonResponse;
 import com.enigma.livecodeloan.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -32,12 +33,12 @@ public class AuthController {
     }
 
     @PostMapping(AppPath.LOGIN)
-    public ResponseEntity<?> login(@Validated @RequestBody AuthRequest authRequest) {
+    public ResponseEntity<?> login(@Validated @RequestBody LoginRequest loginRequest) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
                         CommonResponse.builder()
                                 .message("Success")
-                                .data(authService.login(authRequest))
+                                .data(authService.login(loginRequest))
                                 .build()
                 );
     }

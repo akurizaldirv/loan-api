@@ -7,6 +7,7 @@ public class AppPath {
     public final static String CUSTOMER = BASE + "/customer";
     public final static String INSTALMENT = BASE + "/instalment-type";
     public final static String LOAN_TYPE = BASE + "/loan-types";
+    public final static String TRANSACTION = BASE + "/transactions";
 
 
     public final static String REGISTER = "/signup";

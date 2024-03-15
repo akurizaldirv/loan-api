@@ -2,6 +2,7 @@ package com.enigma.livecodeloan.service.impl;
 
 import com.enigma.livecodeloan.model.entity.*;
 import com.enigma.livecodeloan.model.request.auth.AuthRequest;
+import com.enigma.livecodeloan.model.request.auth.LoginRequest;
 import com.enigma.livecodeloan.model.response.auth.LoginResponse;
 import com.enigma.livecodeloan.model.response.auth.RegisterResponse;
 import com.enigma.livecodeloan.repository.UserRepository;
@@ -71,11 +72,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public LoginResponse login(AuthRequest authRequest) {
+    public LoginResponse login(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        authRequest.getEmail().toLowerCase(),
-                        authRequest.getPassword()
+                        loginRequest.getEmail().toLowerCase(),
+                        loginRequest.getPassword()
                 ));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);

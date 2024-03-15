@@ -2,29 +2,29 @@ package com.enigma.livecodeloan.controller;
 
 import com.enigma.livecodeloan.constant.AppPath;
 import com.enigma.livecodeloan.model.request.loantype.LoanTypeRequest;
-import com.enigma.livecodeloan.model.request.loantype.UpdateLoanTypeRequest;
+import com.enigma.livecodeloan.model.request.transaction.TransactionRequest;
 import com.enigma.livecodeloan.model.response.CommonResponse;
-import com.enigma.livecodeloan.service.LoanTypeService;
+import com.enigma.livecodeloan.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
 @RestController
-@RequestMapping(AppPath.LOAN_TYPE)
-public class LoanTypeController {
+@RequiredArgsConstructor
+@RequestMapping(AppPath.TRANSACTION)
+public class TransactionController {
 
-    private final LoanTypeService loanTypeService;
+    private final TransactionService transactionService;
 
     @PostMapping
-    public ResponseEntity<?> create(@Validated @RequestBody LoanTypeRequest request) {
+    public ResponseEntity<?> create(@Validated @RequestBody TransactionRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
                         CommonResponse.builder()
                                 .message("Success")
-                                .data(loanTypeService.create(request))
+                                .data(transactionService.create(request))
                                 .build()
                 );
     }
@@ -35,7 +35,7 @@ public class LoanTypeController {
                 .body(
                         CommonResponse.builder()
                                 .message("Success")
-                                .data(loanTypeService.getById(id))
+                                .data(transactionService.getById(id))
                                 .build()
                 );
     }
@@ -46,29 +46,7 @@ public class LoanTypeController {
                 .body(
                         CommonResponse.builder()
                                 .message("Success")
-                                .data(loanTypeService.getAll())
-                                .build()
-                );
-    }
-
-    @PutMapping
-    public ResponseEntity<?> update(@Validated @RequestBody UpdateLoanTypeRequest request) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(
-                        CommonResponse.builder()
-                                .message("Success")
-                                .data(loanTypeService.update(request))
-                                .build()
-                );
-    }
-
-    @DeleteMapping(AppPath.ID)
-    public ResponseEntity<?> delete(@PathVariable String id) {
-        loanTypeService.delete(id);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(
-                        CommonResponse.builder()
-                                .message("Success")
+                                .data(transactionService.getAll())
                                 .build()
                 );
     }
