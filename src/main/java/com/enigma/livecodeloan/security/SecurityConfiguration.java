@@ -24,8 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
     private final AuthTokenFilter authTokenFilter;
     private final String[] WHITE_LIST = {
-            AppPath.AUTH_BASE + "/**",
-            "/**"
+            AppPath.AUTH_BASE + "/**"
     };
 
     @Bean

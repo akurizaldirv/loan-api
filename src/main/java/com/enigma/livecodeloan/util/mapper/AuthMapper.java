@@ -1,10 +1,12 @@
 package com.enigma.livecodeloan.util.mapper;
 
+import com.enigma.livecodeloan.model.entity.AppUser;
 import com.enigma.livecodeloan.model.entity.User;
 import com.enigma.livecodeloan.model.entity.UserRole;
 import com.enigma.livecodeloan.model.request.auth.AuthRequest;
 import com.enigma.livecodeloan.model.response.auth.LoginResponse;
 import com.enigma.livecodeloan.model.response.auth.RegisterResponse;
+import com.enigma.livecodeloan.util.enums.ERole;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +19,10 @@ public class AuthMapper {
                 .build();
     }
 
-    public static LoginResponse mapToLoginRes(User user, String token) {
+    public static LoginResponse mapToLoginRes(AppUser user, String token) {
         List<String> roles = new ArrayList<>();
-        for (UserRole role : user.getRoles()) {
-            roles.add(role.getRole().getRole().name());
+        for (ERole role : user.getRoles()) {
+            roles.add(role.name());
         }
 
         return LoginResponse.builder()

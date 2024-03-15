@@ -6,8 +6,10 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.enigma.livecodeloan.model.entity.AppUser;
 import com.enigma.livecodeloan.model.entity.User;
 import com.enigma.livecodeloan.model.entity.UserRole;
+import com.enigma.livecodeloan.util.enums.ERole;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -30,12 +32,12 @@ public class JwtUtil {
     @Value("${api.enigmat-shop.jwt.jwt-expiration}")
     private Long EXPIRATION;
 
-    public String generateToken(User user) {
+    public String generateToken(AppUser user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET.getBytes(StandardCharsets.UTF_8));
             List<String> roles = new ArrayList<>();
-            for (UserRole role : user.getRoles()) {
-                roles.add(role.getRole().getRole().name());
+            for (ERole role : user.getRoles()) {
+                roles.add(role.name());
             }
             return JWT.create() // Membuat JWT Token
                     .withIssuer(APP_NAME)

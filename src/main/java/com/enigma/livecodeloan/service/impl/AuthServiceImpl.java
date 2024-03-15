@@ -1,14 +1,11 @@
 package com.enigma.livecodeloan.service.impl;
 
-import com.enigma.livecodeloan.model.entity.User;
-import com.enigma.livecodeloan.model.entity.Customer;
-import com.enigma.livecodeloan.model.entity.Role;
-import com.enigma.livecodeloan.model.entity.UserRole;
+import com.enigma.livecodeloan.model.entity.*;
 import com.enigma.livecodeloan.model.request.auth.AuthRequest;
 import com.enigma.livecodeloan.model.request.auth.RegisterCustomerRequest;
 import com.enigma.livecodeloan.model.response.auth.LoginResponse;
 import com.enigma.livecodeloan.model.response.auth.RegisterResponse;
-import com.enigma.livecodeloan.repository.AppUserRepository;
+import com.enigma.livecodeloan.repository.UserRepository;
 import com.enigma.livecodeloan.repository.UserRoleRepository;
 import com.enigma.livecodeloan.service.AuthService;
 import com.enigma.livecodeloan.service.CustomerService;
@@ -33,7 +30,7 @@ import java.util.List;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRoleRepository userRoleRepository;
-    private final AppUserRepository appUserRepository;
+    private final UserRepository userRepository;
 
     private final CustomerService customerService;
     private final RoleService roleService;
@@ -55,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
         user.setRoles(List.of(userRole));
 
-        User createdUser = appUserRepository.save(user);
+        User createdUser = userRepository.save(user);
         userRole.setUser(createdUser);
         UserRole createdUserRole = userRoleRepository.save(userRole);
 
@@ -78,7 +75,7 @@ public class AuthServiceImpl implements AuthService {
         roles.add(UserRole.builder().role(roleAdmin).build());
 
         user.setRoles(roles);
-        User createdUser = appUserRepository.save(user);
+        User createdUser = userRepository.save(user);
 
         for (UserRole role : roles) {
             role.setUser(createdUser);
@@ -101,7 +98,7 @@ public class AuthServiceImpl implements AuthService {
         roles.add(UserRole.builder().role(roleStaff).build());
 
         user.setRoles(roles);
-        User createdUser = appUserRepository.save(user);
+        User createdUser = userRepository.save(user);
 
         for (UserRole role : roles) {
             role.setUser(createdUser);
@@ -121,7 +118,7 @@ public class AuthServiceImpl implements AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        User user = (User) authentication.getPrincipal();
+        AppUser user = (AppUser) authentication.getPrincipal();
         String token = jwtUtil.generateToken(user);
 
         return AuthMapper.mapToLoginRes(user, token);

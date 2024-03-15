@@ -1,9 +1,11 @@
 package com.enigma.livecodeloan.service.impl;
 
+import com.enigma.livecodeloan.model.entity.AppUser;
 import com.enigma.livecodeloan.model.entity.User;
 import com.enigma.livecodeloan.model.response.auth.UserResponse;
-import com.enigma.livecodeloan.repository.AppUserRepository;
+import com.enigma.livecodeloan.repository.UserRepository;
 import com.enigma.livecodeloan.service.UserService;
+import com.enigma.livecodeloan.util.enums.ERole;
 import com.enigma.livecodeloan.util.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,39 +18,48 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final AppUserRepository appUserRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUserId(String id) {
-        User user = appUserRepository.findById(id).orElseThrow(
+        User user = userRepository.findById(id).orElseThrow(
                 () -> new UserNotFoundException("User not found")
         );
+        List<ERole> roles = user.getRoles().stream().map(userRole -> {
+            return ERole.valueOf(userRole.getRole().getRole().name());
+        }).toList();
 
-        return User.builder()
-                .email(user.getUsername())
-                .id(user.getId())
+
+        return AppUser.builder()
+                .email(user.getEmail())
+                .roles(roles)
                 .password(user.getPassword())
-                .roles(user.getRoles())
+                .id(user.getId())
                 .build();
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = appUserRepository.findAppUserByEmail(username).orElseThrow(
+        User user = userRepository.findUserByEmail(username).orElseThrow(
                 () -> new UserNotFoundException("User not found")
         );
 
-        return User.builder()
-                .email(user.getUsername())
-                .id(user.getId())
+        List<ERole> roles = user.getRoles().stream().map(userRole -> {
+            return ERole.valueOf(userRole.getRole().getRole().name());
+        }).toList();
+
+
+        return AppUser.builder()
+                .email(user.getEmail())
+                .roles(roles)
                 .password(user.getPassword())
-                .roles(user.getRoles())
+                .id(user.getId())
                 .build();
     }
 
     @Override
     public UserResponse getById(String id) {
-        User user = appUserRepository.findById(id).orElseThrow(
+        User user = userRepository.findById(id).orElseThrow(
                 () -> new UserNotFoundException("User not found")
         );
         List<String> roles = user.getRoles().stream().map(role ->
@@ -56,7 +67,7 @@ public class UserServiceImpl implements UserService {
         ).toList();
 
         return UserResponse.builder()
-                .email(user.getUsername())
+                .email(user.getEmail())
                 .role(roles)
                 .build();
     }

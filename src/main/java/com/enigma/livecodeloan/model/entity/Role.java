@@ -18,6 +18,6 @@ public class Role {
     private String id;
     @Enumerated(EnumType.STRING)
     private ERole role;
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
     private List<UserRole> userRoles;
 }
