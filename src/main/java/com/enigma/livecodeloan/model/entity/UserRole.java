@@ -1,4 +1,4 @@
-package com.enigma.livecodeloan.entity;
+package com.enigma.livecodeloan.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

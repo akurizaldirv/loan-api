@@ -1,8 +1,7 @@
-package com.enigma.livecodeloan.entity;
+package com.enigma.livecodeloan.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.Date;
 import java.util.List;
@@ -17,13 +16,13 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name")
     private String firstName;
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name")
     private String lastName;
-    @Column(name = "date_of_birth", nullable = false)
+    @Column(name = "date_of_birth")
     private Date dateOfBirth;
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String phone;
     private String status;
     @OneToOne

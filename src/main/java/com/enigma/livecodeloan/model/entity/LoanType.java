@@ -1,6 +1,5 @@
-package com.enigma.livecodeloan.entity;
+package com.enigma.livecodeloan.model.entity;
 
-import com.enigma.livecodeloan.util.enums.EInstalmentType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,13 +10,15 @@ import java.util.List;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "t_instalment_type")
-public class InstalmentType {
+@Table(name = "t_loan_type")
+public class LoanType {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    @Enumerated(EnumType.STRING)
-    private EInstalmentType instalmentType;
-    @OneToMany(mappedBy = "instalmentType")
+    @Column(nullable = false)
+    private String type;
+    @Column(name = "max_loan")
+    private Double maxLoan;
+    @OneToMany(mappedBy = "loanType")
     private List<LoanTransaction> loanTransactions;
 }

@@ -1,4 +1,4 @@
-package com.enigma.livecodeloan.entity;
+package com.enigma.livecodeloan.model.entity;
 
 import com.enigma.livecodeloan.util.enums.ERole;
 import jakarta.persistence.*;
