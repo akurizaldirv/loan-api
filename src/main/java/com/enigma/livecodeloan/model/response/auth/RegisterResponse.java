@@ -1,4 +1,4 @@
-package com.enigma.livecodeloan.model.response;
+package com.enigma.livecodeloan.model.response.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class UserResponse {
+public class RegisterResponse {
     private String email;
     private List<String> role;
 }

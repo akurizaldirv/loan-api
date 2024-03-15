@@ -2,9 +2,9 @@ package com.enigma.livecodeloan.util.mapper;
 
 import com.enigma.livecodeloan.model.entity.AppUser;
 import com.enigma.livecodeloan.model.entity.UserRole;
-import com.enigma.livecodeloan.model.request.AuthRequest;
-import com.enigma.livecodeloan.model.response.LoginResponse;
-import com.enigma.livecodeloan.model.response.RegisterResponse;
+import com.enigma.livecodeloan.model.request.auth.AuthRequest;
+import com.enigma.livecodeloan.model.response.auth.LoginResponse;
+import com.enigma.livecodeloan.model.response.auth.RegisterResponse;
 
 import java.util.ArrayList;
 import java.util.List;

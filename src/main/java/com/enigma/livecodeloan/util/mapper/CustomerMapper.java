@@ -1,8 +1,7 @@
 package com.enigma.livecodeloan.util.mapper;
 
 import com.enigma.livecodeloan.model.entity.Customer;
-import com.enigma.livecodeloan.model.request.AuthRequest;
-import com.enigma.livecodeloan.model.response.CustomerResponse;
+import com.enigma.livecodeloan.model.response.customer.CustomerResponse;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

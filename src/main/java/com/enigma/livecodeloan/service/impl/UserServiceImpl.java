@@ -1,12 +1,11 @@
 package com.enigma.livecodeloan.service.impl;
 
 import com.enigma.livecodeloan.model.entity.AppUser;
-import com.enigma.livecodeloan.model.response.UserResponse;
+import com.enigma.livecodeloan.model.response.auth.UserResponse;
 import com.enigma.livecodeloan.repository.AppUserRepository;
 import com.enigma.livecodeloan.service.UserService;
 import com.enigma.livecodeloan.util.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

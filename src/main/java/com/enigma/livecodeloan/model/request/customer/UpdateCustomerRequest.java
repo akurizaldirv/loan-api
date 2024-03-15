@@ -1,4 +1,4 @@
-package com.enigma.livecodeloan.model.request;
+package com.enigma.livecodeloan.model.request.customer;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

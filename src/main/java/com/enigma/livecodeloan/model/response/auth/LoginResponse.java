@@ -1,4 +1,4 @@
-package com.enigma.livecodeloan.model.response;
+package com.enigma.livecodeloan.model.response.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

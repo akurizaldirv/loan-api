@@ -2,10 +2,9 @@ package com.enigma.livecodeloan.service.impl;
 
 import com.enigma.livecodeloan.model.entity.AppUser;
 import com.enigma.livecodeloan.model.entity.Customer;
-import com.enigma.livecodeloan.model.request.AuthRequest;
-import com.enigma.livecodeloan.model.request.RegisterCustomerRequest;
-import com.enigma.livecodeloan.model.request.UpdateCustomerRequest;
-import com.enigma.livecodeloan.model.response.CustomerResponse;
+import com.enigma.livecodeloan.model.request.auth.RegisterCustomerRequest;
+import com.enigma.livecodeloan.model.request.customer.UpdateCustomerRequest;
+import com.enigma.livecodeloan.model.response.customer.CustomerResponse;
 import com.enigma.livecodeloan.repository.CustomerRepository;
 import com.enigma.livecodeloan.service.CustomerService;
 import com.enigma.livecodeloan.util.exception.DataNotFoundException;
@@ -79,6 +78,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional(rollbackOn = Exception.class)
     public void delete(String id) {
+        this.throwIfIdNotExist(id);
         customerRepository.softDeleteById(id);
+    }
+
+    @Override
+    public void throwIfIdNotExist(String id) {
+        this.getCustomerById(id);
     }
 }

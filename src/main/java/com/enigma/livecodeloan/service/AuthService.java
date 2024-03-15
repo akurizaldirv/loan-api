@@ -1,9 +1,9 @@
 package com.enigma.livecodeloan.service;
 
-import com.enigma.livecodeloan.model.request.AuthRequest;
-import com.enigma.livecodeloan.model.request.RegisterCustomerRequest;
-import com.enigma.livecodeloan.model.response.LoginResponse;
-import com.enigma.livecodeloan.model.response.RegisterResponse;
+import com.enigma.livecodeloan.model.request.auth.AuthRequest;
+import com.enigma.livecodeloan.model.request.auth.RegisterCustomerRequest;
+import com.enigma.livecodeloan.model.response.auth.LoginResponse;
+import com.enigma.livecodeloan.model.response.auth.RegisterResponse;
 
 public interface AuthService {
     RegisterResponse registerCustomer(RegisterCustomerRequest request);

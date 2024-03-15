@@ -1,4 +1,4 @@
-package com.enigma.livecodeloan.model.response;
+package com.enigma.livecodeloan.model.response.customer;
 
 import com.zaxxer.hikari.util.ClockSource;
 import lombok.AllArgsConstructor;
