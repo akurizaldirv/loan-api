@@ -5,6 +5,7 @@ import com.enigma.livecodeloan.model.entity.Customer;
 import com.enigma.livecodeloan.model.entity.Role;
 import com.enigma.livecodeloan.model.entity.UserRole;
 import com.enigma.livecodeloan.model.request.AuthRequest;
+import com.enigma.livecodeloan.model.request.RegisterCustomerRequest;
 import com.enigma.livecodeloan.model.response.LoginResponse;
 import com.enigma.livecodeloan.model.response.RegisterResponse;
 import com.enigma.livecodeloan.repository.AppUserRepository;
@@ -24,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,9 +43,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public RegisterResponse register(AuthRequest authRequest) {
+    public RegisterResponse registerCustomer(RegisterCustomerRequest request) {
         Role role = roleService.getOrSave(ERole.ROLE_CUSTOMER);
-        AppUser appUser = AuthMapper.mapToEntity(authRequest, passwordEncoder.encode(authRequest.getPassword()));
+        AppUser appUser = AppUser.builder()
+                .password(passwordEncoder.encode(request.getPassword()))
+                .email(request.getEmail())
+                .build();
+
         UserRole userRole = UserRole.builder()
                 .role(role)
                 .build();
@@ -53,22 +59,69 @@ public class AuthServiceImpl implements AuthService {
         userRole.setAppUser(createdAppUser);
         UserRole createdUserRole = userRoleRepository.save(userRole);
 
-        Customer customer = customerService.create(createdAppUser);
+        Customer customer = customerService.createCustomer(createdAppUser, request);
 
         return AuthMapper.mapToRegisterRes(appUser);
+    }
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public RegisterResponse registerAdmin(AuthRequest request) {
+        Role roleCustomer = roleService.getOrSave(ERole.ROLE_CUSTOMER);
+        Role roleAdmin = roleService.getOrSave(ERole.ROLE_ADMIN);
+        Role roleStaff = roleService.getOrSave(ERole.ROLE_STAFF);
+
+        AppUser appUser = AuthMapper.mapToEntity(request, passwordEncoder.encode(request.getPassword()));
+
+        List<UserRole> roles = new ArrayList<>();
+        roles.add(UserRole.builder().role(roleCustomer).build());
+        roles.add(UserRole.builder().role(roleStaff).build());
+        roles.add(UserRole.builder().role(roleAdmin).build());
+
+        appUser.setRoles(roles);
+        AppUser createdAppUser = appUserRepository.save(appUser);
+
+        for (UserRole role : roles) {
+            role.setAppUser(createdAppUser);
+            userRoleRepository.save(role);
+        }
+
+        Customer customer = customerService.create(createdAppUser);
+
+        return AuthMapper.mapToRegisterRes(createdAppUser);
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public RegisterResponse registerStaff(AuthRequest request) {
+        Role roleCustomer = roleService.getOrSave(ERole.ROLE_CUSTOMER);
+        Role roleStaff = roleService.getOrSave(ERole.ROLE_STAFF);
+
+        AppUser appUser = AuthMapper.mapToEntity(request, passwordEncoder.encode(request.getPassword()));
+
+        List<UserRole> roles = new ArrayList<>();
+        roles.add(UserRole.builder().role(roleCustomer).build());
+        roles.add(UserRole.builder().role(roleStaff).build());
+
+        appUser.setRoles(roles);
+        AppUser createdAppUser = appUserRepository.save(appUser);
+
+        for (UserRole role : roles) {
+            role.setAppUser(createdAppUser);
+            userRoleRepository.save(role);
+        }
+
+        Customer customer = customerService.create(createdAppUser);
+
+        return AuthMapper.mapToRegisterRes(createdAppUser);
     }
 
     @Override
     public LoginResponse login(AuthRequest authRequest) {
-        System.out.println("============================ SERVICE");
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authRequest.getEmail().toLowerCase(),
                         authRequest.getPassword()
                 ));
-
-        System.out.println("============================ AFTER SERVICE");
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

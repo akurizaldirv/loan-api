@@ -24,7 +24,7 @@ public class Customer {
     private Date dateOfBirth;
     @Column(unique = true)
     private String phone;
-    private String status;
+    private Boolean status;
     @OneToOne
     @JoinColumn(name = "user_id")
     private AppUser user;
