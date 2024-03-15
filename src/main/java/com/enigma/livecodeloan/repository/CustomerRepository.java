@@ -1,6 +1,7 @@
 package com.enigma.livecodeloan.repository;
 
 import com.enigma.livecodeloan.model.entity.Customer;
+import com.enigma.livecodeloan.model.entity.User;
 import com.enigma.livecodeloan.util.enums.EStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

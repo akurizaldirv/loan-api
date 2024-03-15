@@ -12,7 +12,7 @@ public class AppPath {
 
     public final static String REGISTER = "/signup";
     public final static String LOGIN = "/signin";
-    public final static String ADMIN = "/admin";
-    public final static String STAFF = "/staff";
     public final static String ID = "/{id}";
+    public final static String APPROVE = "/approve";
+    public final static String REJECT = "/reject";
 }

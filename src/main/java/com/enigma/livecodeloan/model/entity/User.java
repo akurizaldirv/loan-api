@@ -21,4 +21,6 @@ public class User {
     private String password;
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserRole> roles;
+    @OneToOne(mappedBy = "user")
+    private Customer customer;
 }

@@ -1,26 +1,29 @@
 package com.enigma.livecodeloan.service.impl;
 
-import com.enigma.livecodeloan.model.entity.Customer;
-import com.enigma.livecodeloan.model.entity.InstalmentType;
-import com.enigma.livecodeloan.model.entity.LoanTransaction;
-import com.enigma.livecodeloan.model.entity.LoanType;
+import com.enigma.livecodeloan.model.entity.*;
+import com.enigma.livecodeloan.model.request.transaction.ApproveRequest;
+import com.enigma.livecodeloan.model.request.transaction.RejectRequest;
 import com.enigma.livecodeloan.model.request.transaction.TransactionRequest;
 import com.enigma.livecodeloan.model.response.transaction.TransactionDetailResponse;
 import com.enigma.livecodeloan.model.response.transaction.TransactionResponse;
 import com.enigma.livecodeloan.repository.LoanTransactionDetailRepository;
 import com.enigma.livecodeloan.repository.LoanTransactionRepository;
-import com.enigma.livecodeloan.service.CustomerService;
-import com.enigma.livecodeloan.service.InstalmentTypeService;
-import com.enigma.livecodeloan.service.LoanTypeService;
-import com.enigma.livecodeloan.service.TransactionService;
+import com.enigma.livecodeloan.service.*;
+import com.enigma.livecodeloan.util.enums.ApprovalStatus;
+import com.enigma.livecodeloan.util.enums.EInstalmentType;
+import com.enigma.livecodeloan.util.enums.LoanStatus;
 import com.enigma.livecodeloan.util.exception.DataNotFoundException;
 import com.enigma.livecodeloan.util.mapper.TransactionMapper;
+import jakarta.transaction.Transactional;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.enigma.livecodeloan.util.enums.EInstalmentType.*;
 import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
@@ -32,6 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final InstalmentTypeService instalmentTypeService;
     private final CustomerService customerService;
+    private final UserService userService;
     private final LoanTypeService loanTypeService;
 
     @Override
@@ -77,5 +81,67 @@ public class TransactionServiceImpl implements TransactionService {
                     return TransactionMapper.mapToTrxRes(loanTransaction, trxDetailRes);
                 }
         ).toList();
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public TransactionResponse approve(String adminId, ApproveRequest approveRequest) {
+        User user = userService.getUserByCustomerId(adminId);
+        LoanTransaction loanTransaction = this.getTrxById(approveRequest.getLoanTransactionId());
+
+        if (loanTransaction.getApprovalStatus() == ApprovalStatus.REJECTED) throw new ValidationException("Cannot Approve rejected Loan Request");
+        if (loanTransaction.getApprovalStatus() == ApprovalStatus.APPROVED) throw new ValidationException("Already Approved");
+
+        loanTransaction.setApprovedBy(user.getEmail());
+        loanTransaction.setApprovedAt(Instant.now().getEpochSecond());
+        loanTransaction.setApprovalStatus(ApprovalStatus.APPROVED);
+        loanTransaction.setUpdatedAt(Instant.now().getEpochSecond());
+
+        Integer totalTransactionDetail = switch (loanTransaction.getInstalmentType().getInstalmentType()) {
+            case ONE_MONTH -> 1;
+            case THREE_MONTHS -> 3;
+            case SIXTH_MONTHS -> 6;
+            case NINE_MONTHS -> 9;
+            case TWELVE_MONTHS -> 12;
+            default -> 12;
+        };
+        Long dividedNominal = (long) (((approveRequest.getInterestRates()/100)*loanTransaction.getNominal()) + loanTransaction.getNominal());
+
+        List<LoanTransactionDetail> loanTransactionDetails = new ArrayList<>();
+        for (int i = 0; i < totalTransactionDetail; i++) {
+            loanTransactionDetails.add(
+                    LoanTransactionDetail.builder()
+                            .createdAt(Instant.now().getEpochSecond())
+                            .nominal(dividedNominal.doubleValue())
+                            .loanStatus(LoanStatus.UNPAID)
+                            .build()
+            );
+        }
+
+        loanTransaction.setLoanTransactionDetails(loanTransactionDetails);
+        loanTransactionRepository.save(loanTransaction);
+
+        List<TransactionDetailResponse> transactionDetailResponses = loanTransactionDetails.stream().map(
+                TransactionMapper::mapToDetailRes
+        ).toList();
+        return TransactionMapper.mapToTrxRes(loanTransaction, transactionDetailResponses);
+    }
+
+    @Override
+    public TransactionResponse reject(String adminId, RejectRequest rejectRequest) {
+        User user = userService.getUserByCustomerId(adminId);
+        LoanTransaction loanTransaction = this.getTrxById(rejectRequest.getLoanTransactionId());
+
+        if (loanTransaction.getApprovalStatus() == ApprovalStatus.APPROVED) throw new ValidationException("Cannot Reject Approved Loan Request");
+        if (loanTransaction.getApprovalStatus() == ApprovalStatus.REJECTED) throw new ValidationException("Already Rejected");
+
+        loanTransaction.setApprovedBy(user.getEmail());
+        loanTransaction.setApprovedAt(Instant.now().getEpochSecond());
+        loanTransaction.setApprovalStatus(ApprovalStatus.REJECTED);
+        loanTransaction.setUpdatedAt(Instant.now().getEpochSecond());
+
+        loanTransactionRepository.save(loanTransaction);
+
+        return TransactionMapper.mapToTrxRes(loanTransaction, null);
     }
 }

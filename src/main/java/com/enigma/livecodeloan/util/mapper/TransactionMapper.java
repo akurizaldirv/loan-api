@@ -29,7 +29,7 @@ public class TransactionMapper {
                 .customer(CustomerMapper.mapToRes(loanTransaction.getCustomer()))
                 .instalmentType(InstalmentTypeMapper.mapToRes(loanTransaction.getInstalmentType()))
                 .loanType(LoanTypeMapper.mapToRes(loanTransaction.getLoanType()))
-                .nominal(loanTransaction.getNominal().longValue())
+                .nominal(loanTransaction.getNominal())
                 .transactionDetailResponses(transactionDetailResponses)
                 .updatedAt(loanTransaction.getUpdatedAt())
                 .build();

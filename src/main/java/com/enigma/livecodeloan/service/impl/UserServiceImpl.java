@@ -6,6 +6,7 @@ import com.enigma.livecodeloan.model.response.auth.UserResponse;
 import com.enigma.livecodeloan.repository.UserRepository;
 import com.enigma.livecodeloan.service.UserService;
 import com.enigma.livecodeloan.util.enums.ERole;
+import com.enigma.livecodeloan.util.exception.DataNotFoundException;
 import com.enigma.livecodeloan.util.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -70,5 +71,12 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .role(roles)
                 .build();
+    }
+
+    @Override
+    public User getUserByCustomerId(String id) {
+        return userRepository.findByCustomerId(id).orElseThrow(
+                () -> new DataNotFoundException("User not found")
+        );
     }
 }

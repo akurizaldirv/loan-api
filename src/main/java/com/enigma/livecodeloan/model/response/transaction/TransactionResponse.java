@@ -25,7 +25,7 @@ public class TransactionResponse {
     private LoanTypeResponse loanType;
     private InstalmentTypeResponse instalmentType;
     private CustomerResponse customer;
-    private Long nominal;
+    private Double nominal;
     private Long approvedAt;
     private String approvedBy;
     private ApprovalStatus approvalStatus;
