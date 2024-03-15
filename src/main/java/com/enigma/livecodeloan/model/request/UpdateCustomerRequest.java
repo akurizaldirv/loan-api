@@ -1,6 +1,5 @@
 package com.enigma.livecodeloan.model.request;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -11,14 +10,12 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder(toBuilder = true)
-public class RegisterCustomerRequest {
-    @NotBlank(message = "Email cannot be blank")
-    private String email;
-    @NotBlank(message = "Password cannot be blank")
-    private String password;
+public class UpdateCustomerRequest {
+    @NotBlank(message = "Customer ID cannot be blank")
+    private String id;
     @NotBlank(message = "First Name cannot be blank")
     private String firstName;
     @NotBlank(message = "Last Name cannot be blank")
@@ -27,4 +24,6 @@ public class RegisterCustomerRequest {
     private Date dateOfBirth;
     @NotBlank(message = "Phone cannot be blank")
     private String phone;
+    @NotNull(message = "Status must be 0 or 1")
+    private Integer status;
 }

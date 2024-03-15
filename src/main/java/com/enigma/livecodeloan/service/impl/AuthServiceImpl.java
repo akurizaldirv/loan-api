@@ -85,8 +85,6 @@ public class AuthServiceImpl implements AuthService {
             userRoleRepository.save(role);
         }
 
-        Customer customer = customerService.create(createdAppUser);
-
         return AuthMapper.mapToRegisterRes(createdAppUser);
     }
 
@@ -109,8 +107,6 @@ public class AuthServiceImpl implements AuthService {
             role.setAppUser(createdAppUser);
             userRoleRepository.save(role);
         }
-
-        Customer customer = customerService.create(createdAppUser);
 
         return AuthMapper.mapToRegisterRes(createdAppUser);
     }
