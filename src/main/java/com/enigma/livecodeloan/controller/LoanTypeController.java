@@ -1,8 +1,6 @@
 package com.enigma.livecodeloan.controller;
 
 import com.enigma.livecodeloan.constant.AppPath;
-import com.enigma.livecodeloan.model.request.instalmenttype.InstalmentTypeRequest;
-import com.enigma.livecodeloan.model.request.instalmenttype.UpdateInstalmentTypeRequest;
 import com.enigma.livecodeloan.model.request.loan.LoanTypeRequest;
 import com.enigma.livecodeloan.model.request.loan.UpdateLoanTypeRequest;
 import com.enigma.livecodeloan.model.response.CommonResponse;

@@ -1,5 +1,6 @@
 package com.enigma.livecodeloan.model.entity;
 
+import com.enigma.livecodeloan.util.enums.EStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +25,8 @@ public class Customer {
     private Date dateOfBirth;
     @Column(unique = true)
     private String phone;
-    private Boolean status;
+    @Enumerated(EnumType.STRING)
+    private EStatus status;
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;

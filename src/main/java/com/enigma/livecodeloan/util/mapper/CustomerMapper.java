@@ -19,7 +19,7 @@ public class CustomerMapper {
                 .firstName(customer.getFirstName())
                 .lastName(customer.getLastName())
                 .phone(customer.getPhone())
-                .status((customer.getStatus()) ? "ACTIVE" : "NON-ACTIVE")
+                .status(customer.getStatus().name())
                 .build();
     }
 }
