@@ -11,6 +11,7 @@ import com.enigma.livecodeloan.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER')")
     public ResponseEntity<?> create(@Validated @RequestBody TransactionRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
@@ -55,6 +57,7 @@ public class TransactionController {
     }
 
     @PutMapping(AppPath.ID + AppPath.APPROVE)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_STAFF')")
     public ResponseEntity<?> approve(@PathVariable String id, @Validated @RequestBody ApproveRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
@@ -65,6 +68,7 @@ public class TransactionController {
                 );
     }
     @PutMapping(AppPath.ID + AppPath.REJECT)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_STAFF')")
     public ResponseEntity<?> reject(@PathVariable String id, @Validated @RequestBody RejectRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
@@ -74,8 +78,7 @@ public class TransactionController {
                                 .build()
                 );
     }
-    @PutMapping(AppPath.ID + AppPath.PAY
-    )
+    @PutMapping(AppPath.ID + AppPath.PAY)
     public ResponseEntity<?> pay(@PathVariable String id, @Validated @RequestBody PayRequest payRequest) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(

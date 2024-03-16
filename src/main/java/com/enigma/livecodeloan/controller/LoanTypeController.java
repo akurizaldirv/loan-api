@@ -8,6 +8,7 @@ import com.enigma.livecodeloan.service.LoanTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ public class LoanTypeController {
     private final LoanTypeService loanTypeService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_STAFF')")
     public ResponseEntity<?> create(@Validated @RequestBody LoanTypeRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
@@ -52,6 +54,7 @@ public class LoanTypeController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_STAFF')")
     public ResponseEntity<?> update(@Validated @RequestBody UpdateLoanTypeRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(

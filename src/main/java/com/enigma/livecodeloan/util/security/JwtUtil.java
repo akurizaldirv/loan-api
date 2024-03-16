@@ -10,6 +10,7 @@ import com.enigma.livecodeloan.model.entity.AppUser;
 import com.enigma.livecodeloan.model.entity.User;
 import com.enigma.livecodeloan.model.entity.UserRole;
 import com.enigma.livecodeloan.util.enums.ERole;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -47,7 +48,7 @@ public class JwtUtil {
                     .withClaim("role", roles)
                     .sign(algorithm);
         } catch (JWTCreationException e) {
-            throw new RuntimeException();
+            throw new ValidationException("Failed generating token");
         }
     }
 
@@ -60,7 +61,7 @@ public class JwtUtil {
 
             return decodedJWT.getIssuer().equals(APP_NAME);
         } catch (JWTVerificationException e) {
-            throw new RuntimeException();
+            throw new ValidationException("Token invalid, please re-login");
         }
     }
 
@@ -76,7 +77,7 @@ public class JwtUtil {
             info.put("role", decodedJWT.getClaim("role").asString());
             return info;
         } catch (JWTVerificationException e) {
-            throw new RuntimeException();
+            throw new ValidationException("Failed fetching data from token");
         }
     }
 }

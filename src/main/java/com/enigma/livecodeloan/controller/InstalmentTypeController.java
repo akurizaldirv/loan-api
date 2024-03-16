@@ -21,6 +21,7 @@ public class InstalmentTypeController {
     private final InstalmentTypeService instalmentTypeService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_STAFF')")
     public ResponseEntity<?> create(@Validated @RequestBody InstalmentTypeRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
@@ -54,6 +55,7 @@ public class InstalmentTypeController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_STAFF')")
     public ResponseEntity<?> update(@Validated @RequestBody UpdateInstalmentTypeRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
