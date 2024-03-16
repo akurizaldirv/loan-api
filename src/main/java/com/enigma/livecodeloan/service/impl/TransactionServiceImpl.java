@@ -121,14 +121,17 @@ public class TransactionServiceImpl implements TransactionService {
             case TWELVE_MONTHS -> 12;
             default -> 12;
         };
-        Long dividedNominal = (long) (((approveRequest.getInterestRates()/100)*loanTransaction.getNominal()) + loanTransaction.getNominal());
+        Double dividedNominal = loanTransaction.getNominal()/totalTransactionDetail;
+        Double interestNominal = loanTransaction.getNominal() * (approveRequest.getInterestRates()/100.0);
+        Double payNominal = dividedNominal + interestNominal;
+
 
         List<LoanTransactionDetail> loanTransactionDetails = new ArrayList<>();
         for (int i = 0; i < totalTransactionDetail; i++) {
             loanTransactionDetails.add(
                     LoanTransactionDetail.builder()
                             .createdAt(Instant.now().getEpochSecond())
-                            .nominal(dividedNominal.doubleValue())
+                            .nominal(payNominal)
                             .loanStatus(LoanStatus.UNPAID)
                             .loanTransaction(loanTransaction)
                             .build()
