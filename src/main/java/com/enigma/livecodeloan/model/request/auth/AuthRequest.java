@@ -1,7 +1,9 @@
 package com.enigma.livecodeloan.model.request.auth;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +31,7 @@ public class AuthRequest {
     private Date dateOfBirth;
     @NotBlank(message = "Phone cannot be blank")
     private String phone;
-    @NotNull(message = "Role cannot be blank")
-    private List<String> roles;
+    @NotNull(message = "Role cannot be null")
+    @NotEmpty(message = "Role cannot be blank")
+    private List<@NotNull(message = "Role cannot be null") String> roles;
 }

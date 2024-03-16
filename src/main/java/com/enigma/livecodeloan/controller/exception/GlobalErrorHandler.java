@@ -56,13 +56,13 @@ public class GlobalErrorHandler {
         return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ErrorResponse> handleAllException (Exception ex) {
-//        ErrorResponse errorResponse = new ErrorResponse();
-//
-//        errorResponse.setMessage(ex.getMessage());
-//        errorResponse.setTimestamp(new Date());
-//
-//        return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleAllException (Exception ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+
+        errorResponse.setMessage(ex.getMessage());
+        errorResponse.setTimestamp(new Date());
+
+        return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

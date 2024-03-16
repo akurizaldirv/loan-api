@@ -11,7 +11,9 @@ import com.enigma.livecodeloan.model.entity.User;
 import com.enigma.livecodeloan.model.entity.UserRole;
 import com.enigma.livecodeloan.util.enums.ERole;
 import jakarta.validation.ValidationException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -22,7 +24,10 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+//@RequiredArgsConstructor
 public class JwtUtil {
+
+//    private final AuthenticationEntryPoint authenticationEntryPoint;
 
     @Value("${api.enigmat-shop.jwt.jwt-secret}")
     private String SECRET;
@@ -61,7 +66,7 @@ public class JwtUtil {
 
             return decodedJWT.getIssuer().equals(APP_NAME);
         } catch (JWTVerificationException e) {
-            throw new ValidationException("Token invalid, please re-login");
+            return false;
         }
     }
 
