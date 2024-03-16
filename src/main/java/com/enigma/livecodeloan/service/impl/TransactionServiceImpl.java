@@ -174,6 +174,7 @@ public class TransactionServiceImpl implements TransactionService {
         loanTransaction.setUpdatedAt(Instant.now().getEpochSecond());
 
         LoanTransactionDetail loanTransactionDetail = this.getTrxDetailByIdAndLoanId(payRequest.getLoanTransactionDetailId(), trxId);
+        if (loanTransactionDetail.getLoanStatus() == LoanStatus.PAID) throw new ValidationException("Loan Transaction Detail already paid");
         loanTransactionDetail.setTransactionDate(Instant.now().getEpochSecond());
         loanTransactionDetail.setUpdatedAt(Instant.now().getEpochSecond());
         loanTransactionDetail.setLoanStatus(LoanStatus.PAID);
