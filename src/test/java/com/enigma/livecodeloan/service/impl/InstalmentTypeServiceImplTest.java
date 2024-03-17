@@ -8,27 +8,37 @@ import com.enigma.livecodeloan.repository.InstalmentTypeRepository;
 import com.enigma.livecodeloan.util.enums.EInstalmentType;
 import com.enigma.livecodeloan.util.exception.DataNotFoundException;
 import com.enigma.livecodeloan.util.mapper.InstalmentTypeMapper;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import jakarta.validation.ValidationException;
+import org.junit.jupiter.api.*;
+import org.mockito.MockedStatic;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 class InstalmentTypeServiceImplTest {
     private InstalmentTypeRepository instalmentTypeRepository;
     private InstalmentTypeServiceImpl instalmentTypeService;
+    private static MockedStatic<InstalmentTypeMapper> mockedStatic;
 
     @BeforeEach
     void setUp() {
         instalmentTypeRepository = mock(InstalmentTypeRepository.class);
         instalmentTypeService = new InstalmentTypeServiceImpl(instalmentTypeRepository);
-        mockStatic(InstalmentTypeMapper.class);
     }
+
+    @BeforeAll
+    public static void init() {
+        mockedStatic = mockStatic(InstalmentTypeMapper.class);
+    }
+
+    @AfterAll
+    public static void close() {
+        mockedStatic.close();
+    }
+
 
     @Test
     void create_ValidInput_InstalmentTypeResponse() {
@@ -153,6 +163,25 @@ class InstalmentTypeServiceImplTest {
     }
 
     @Test
+    void update_InvalidInput_InstalmentTypeResponse() {
+        UpdateInstalmentTypeRequest dummyReq = UpdateInstalmentTypeRequest.builder()
+                .id("instalment123")
+                .instalmentType("INVALID_INPUT")
+                .build();
+
+        InstalmentType dummyInstalmentType = InstalmentType.builder()
+                .id("instalment123")
+                .instalmentType(EInstalmentType.NINE_MONTHS)
+                .build();
+
+        when(instalmentTypeRepository.findById(dummyReq.getId())).thenReturn(Optional.of(dummyInstalmentType));
+
+        Assertions.assertThrows(ValidationException.class, () -> instalmentTypeService.update(dummyReq));
+        verify(instalmentTypeRepository, times(1)).findById(dummyReq.getId());
+        verify(instalmentTypeRepository, never()).save(any(InstalmentType.class));
+    }
+
+    @Test
     void delete_ExistId_NoResponse() {
         InstalmentType dummyInstalmentType = InstalmentType.builder()
                 .id("instalment123")
@@ -162,6 +191,7 @@ class InstalmentTypeServiceImplTest {
         when(instalmentTypeRepository.findById(dummyInstalmentType.getId())).thenReturn(Optional.of(dummyInstalmentType));
 
         instalmentTypeService.delete(dummyInstalmentType.getId());
+
         verify(instalmentTypeRepository, times(1)).deleteById(dummyInstalmentType.getId());
         verify(instalmentTypeRepository, times(1)).findById(dummyInstalmentType.getId());
     }
