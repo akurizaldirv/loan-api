@@ -29,7 +29,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void loadUserByUserId_ExistId_ReturnAppUser() {
+    void loadUserByUserId_ExistId_ReturnUserDetails() {
         AppUser dummyAppUser = AppUser.builder()
                 .id("appuser123")
                 .password("password123")
@@ -61,7 +61,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void loadUserByUsername() {
+    void loadUserByUsername_ExistUsername_ReturnUserDetails() {
         AppUser dummyAppUser = AppUser.builder()
                 .id("appuser123")
                 .password("password123")
@@ -93,7 +93,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getById() {
+    void getById_ExistId_ReturnUserResponse() {
         UserResponse dummyRes = UserResponse.builder()
                 .role(List.of(ERole.ROLE_ADMIN.name()))
                 .email("email@mail.id")
@@ -121,7 +121,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserByCustomerId() {
+    void getUserByCustomerId_ExistCustomerId_ReturnUser() {
         UserRole dummyUserRole = UserRole.builder()
                 .role(Role.builder()
                         .role(ERole.ROLE_ADMIN)
