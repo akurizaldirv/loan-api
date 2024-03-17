@@ -11,7 +11,6 @@ import com.enigma.livecodeloan.repository.LoanTransactionDetailRepository;
 import com.enigma.livecodeloan.repository.LoanTransactionRepository;
 import com.enigma.livecodeloan.service.*;
 import com.enigma.livecodeloan.util.enums.ApprovalStatus;
-import com.enigma.livecodeloan.util.enums.EInstalmentType;
 import com.enigma.livecodeloan.util.enums.LoanStatus;
 import com.enigma.livecodeloan.util.exception.DataNotFoundException;
 import com.enigma.livecodeloan.util.mapper.TransactionMapper;
@@ -24,8 +23,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.enigma.livecodeloan.util.enums.EInstalmentType.*;
-import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 @Service
