@@ -49,7 +49,7 @@ class LoanTypeServiceImplTest {
 
 
     @Test
-    void create_ValidInput_InstalmentTypeResponse() {
+    void create_ValidInput_LoanTypeResponse() {
         LoanType dummyLoanType = LoanType.builder()
                 .maxLoan(20000000.0)
                 .type("Pinjaman Pribadi")
