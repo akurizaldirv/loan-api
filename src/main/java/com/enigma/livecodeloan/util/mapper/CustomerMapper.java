@@ -5,6 +5,7 @@ import com.enigma.livecodeloan.model.response.customer.CustomerResponse;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class CustomerMapper {
     public static CustomerResponse mapToRes(Customer customer) {
@@ -12,6 +13,9 @@ public class CustomerMapper {
         System.out.println(customer.getDateOfBirth());
         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String date = formatter.format(customer.getDateOfBirth());
+        List<String> roles = customer.getUser().getRoles().stream().map(userRole -> {
+            return userRole.getRole().getRole().name();
+        }).toList();
 
         return CustomerResponse.builder()
                 .id(customer.getId())
@@ -20,6 +24,7 @@ public class CustomerMapper {
                 .lastName(customer.getLastName())
                 .phone(customer.getPhone())
                 .status(customer.getStatus().name())
+                .roles(roles)
                 .build();
     }
 }
