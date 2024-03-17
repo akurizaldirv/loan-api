@@ -80,8 +80,6 @@ public class TransactionServiceImpl implements TransactionService {
         LoanTransaction loanTransaction = this.getTrxById(id);
         List<TransactionDetailResponse> detailResponses = loanTransaction.getLoanTransactionDetails()
                 .stream().map(TransactionMapper::mapToDetailRes).toList();
-        System.out.println(" --------- " + loanTransaction.getLoanTransactionDetails());
-        System.out.println(" --------- " + detailResponses);
         return TransactionMapper.mapToTrxRes(loanTransaction, detailResponses);
     }
 
