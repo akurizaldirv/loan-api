@@ -18,7 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class InstalmentTypeImpl implements InstalmentTypeService {
+public class InstalmentTypeServiceImpl implements InstalmentTypeService {
 
     private final InstalmentTypeRepository instalmentTypeRepository;
 
